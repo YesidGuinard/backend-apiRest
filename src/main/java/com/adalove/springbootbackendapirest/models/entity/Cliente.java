@@ -14,12 +14,12 @@ public class Cliente implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotEmpty
-    @Size(min = 4, max = 12)
+    @Size(min = 3, max = 12)
     @Column(nullable = false)
     private String nombre;
 
     @NotEmpty
-    @Size(min = 4, max = 12)
+    @Size(min = 3, max = 12)
     @Column(nullable = false)
     private String apellido;
 
