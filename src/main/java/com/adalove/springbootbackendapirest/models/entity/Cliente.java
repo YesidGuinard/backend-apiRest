@@ -1,4 +1,5 @@
 package com.adalove.springbootbackendapirest.models.entity;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -13,37 +14,39 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name="clientes")
+@Table(name = "clientes")
 public class Cliente implements Serializable {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message ="no puede estar vacio")
-    @Size(min=4, max=12, message="el tamaño tiene que estar entre 4 y 12")
-    @Column(nullable=false)
+    @NotEmpty(message = "no puede estar vacio")
+    @Size(min = 4, max = 12, message = "el tamaño tiene que estar entre 4 y 12")
+    @Column(nullable = false)
     private String nombre;
 
-    @NotEmpty(message ="no puede estar vacio")
+    @NotEmpty(message = "no puede estar vacio")
     private String apellido;
 
-    @NotEmpty(message ="no puede estar vacio")
-    @Email(message="no es una dirección de correo bien formada")
-    @Column(nullable=false, unique=true)
+    @NotEmpty(message = "no puede estar vacio")
+    @Email(message = "no es una dirección de correo bien formada")
+    @Column(nullable = false, unique = false)
     private String email;
 
-    @Column(name="create_at")
+    @NotNull(message = "no puede estar vacio")
+    @Column(name = "create_at")
     @Temporal(TemporalType.DATE)
     private Date createAt;
 
-    @PrePersist
-    public void prePersist() {
-        createAt = new Date();
-    }
+//    @PrePersist
+//    public void prePersist() {
+//        createAt = new Date();
+//    }
 
     public Long getId() {
         return id;
