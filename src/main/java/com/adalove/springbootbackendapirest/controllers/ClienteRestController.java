@@ -3,10 +3,13 @@ package com.adalove.springbootbackendapirest.controllers;
 import com.adalove.springbootbackendapirest.models.entity.Cliente;
 import com.adalove.springbootbackendapirest.models.service.IclienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -17,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -208,13 +212,26 @@ public class ClienteRestController {
             response.put("cliente", cliente);
             response.put("mensaje", "Has subido correctamente la imagen: " + nombreArchivo);
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
-
         }
-
-
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
-
-
     }
 
+    @GetMapping("/uploads/img/{nombreFoto:.+}")
+    public ResponseEntity<Resource> verFoto(@PathVariable String nombreFoto) {
+        Path rutaArchivo = Paths.get("uploads").resolve(nombreFoto).toAbsolutePath();
+        Resource recurso = null;
+
+        try {
+            recurso = new UrlResource(rutaArchivo.toUri());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        if (!recurso.exists() && recurso.isReadable()) {
+            throw new RuntimeException("Error No se pudo cargar la imagen" + nombreFoto);
+        }
+
+        HttpHeaders cabecera = new HttpHeaders();
+        cabecera.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + recurso.getFilename() + "\"");
+        return new ResponseEntity<Resource>(recurso, cabecera,HttpStatus.OK);
+    }
 }
