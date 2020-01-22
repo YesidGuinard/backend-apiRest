@@ -2,6 +2,8 @@ package com.adalove.springbootbackendapirest.controllers;
 
 import com.adalove.springbootbackendapirest.models.entity.Cliente;
 import com.adalove.springbootbackendapirest.models.service.IclienteService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -13,7 +15,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,6 +35,8 @@ public class ClienteRestController {
 
     @Autowired
     private IclienteService clienteService;
+
+    private final Logger log = LoggerFactory.getLogger(ClienteRestController.class);
 
     @GetMapping("/clientes")
     public List<Cliente> index() {
@@ -176,7 +179,6 @@ public class ClienteRestController {
     @PostMapping("/clientes/upload")
     public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo, @RequestParam("id") Long id) {
         Map<String, Object> response = new HashMap<>();
-
         Cliente cliente = null;
         try {
             cliente = clienteService.findById(id);
@@ -188,7 +190,7 @@ public class ClienteRestController {
         if (!archivo.isEmpty()) {
             String nombreArchivo = UUID.randomUUID().toString() + "_" + archivo.getOriginalFilename().replace(" ", "");
             Path rutaArchivo = Paths.get("uploads").resolve(nombreArchivo).toAbsolutePath();
-
+            log.info(rutaArchivo.toString());
             try {
                 Files.copy(archivo.getInputStream(), rutaArchivo);
             } catch (IOException e) {
@@ -219,6 +221,7 @@ public class ClienteRestController {
     @GetMapping("/uploads/img/{nombreFoto:.+}")
     public ResponseEntity<Resource> verFoto(@PathVariable String nombreFoto) {
         Path rutaArchivo = Paths.get("uploads").resolve(nombreFoto).toAbsolutePath();
+        log.info(rutaArchivo.toString());
         Resource recurso = null;
 
         try {
@@ -232,6 +235,6 @@ public class ClienteRestController {
 
         HttpHeaders cabecera = new HttpHeaders();
         cabecera.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + recurso.getFilename() + "\"");
-        return new ResponseEntity<Resource>(recurso, cabecera,HttpStatus.OK);
+        return new ResponseEntity<Resource>(recurso, cabecera, HttpStatus.OK);
     }
 }
