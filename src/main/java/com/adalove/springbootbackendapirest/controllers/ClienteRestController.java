@@ -12,6 +12,7 @@ import javax.validation.Valid;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 import com.adalove.springbootbackendapirest.models.entity.Cliente;
+import com.adalove.springbootbackendapirest.models.entity.Region;
 import com.adalove.springbootbackendapirest.models.service.IClienteService;
 import com.adalove.springbootbackendapirest.models.service.IUploadFileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,6 +146,7 @@ public class ClienteRestController {
             clienteActual.setNombre(cliente.getNombre());
             clienteActual.setEmail(cliente.getEmail());
             clienteActual.setCreateAt(cliente.getCreateAt());
+            clienteActual.setRegion(cliente.getRegion());
 
             clienteUpdated = clienteService.save(clienteActual);
 
@@ -232,4 +234,10 @@ public class ClienteRestController {
 
         return new ResponseEntity<Resource>(recurso, cabecera, HttpStatus.OK);
     }
+
+    @GetMapping("/clientes/regiones")
+    public List<Region> ListarRegiones() {
+        return clienteService.findAllRegiones();
+    }
+
 }
