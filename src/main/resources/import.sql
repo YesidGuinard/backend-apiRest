@@ -24,11 +24,13 @@ INSERT INTO roles (nombre) VALUES ('ROLE_USER');
 INSERT INTO roles (nombre) VALUES ('ROLE_ADMIN');
 
 /* Creamos algunos usuarios con sus roles */
-INSERT INTO usuarios (user_name, password, enabled, nombre, apellido, email) VALUES ('andres','$2a$10$C3Uln5uqnzx/GswADURJGOIdBqYrly9731fnwKDaUdBkt/M3qvtLq','true', 'Andres', 'Guzman','profesor@bolsadeideas.com');
+INSERT INTO usuarios (user_name, password, enabled, nombre, apellido, email) VALUES ('Vendor','$2a$10$C3Uln5uqnzx/GswADURJGOIdBqYrly9731fnwKDaUdBkt/M3qvtLq','true', 'Andres', 'Guzman','profesor@bolsadeideas.com');
 INSERT INTO usuarios (user_name, password, enabled, nombre, apellido, email) VALUES ('admin','$2a$10$RmdEsvEfhI7Rcm9f/uZXPebZVCcPC7ZXZwV51efAvMAp1rIaRAfPK','true', 'John', 'Doe','jhon.doe@bolsadeideas.com');
+INSERT INTO usuarios (user_name, password, enabled, nombre, apellido, email) VALUES ('Tec','$2a$10$oOE9Kx4yHTXoJLq7svJtIe9pobW2nV7O0c4YbqlHp42mYMBE32fL.','false', 'Yesid', 'Guinard','yesid.doe@bolsadeideas.com');
 
 
 
 INSERT INTO usuarios_roles (usuario_id, role_id) VALUES (1, 1);
 INSERT INTO usuarios_roles (usuario_id, role_id) VALUES (2, 2);
 INSERT INTO usuarios_roles (usuario_id, role_id) VALUES (2, 1);
+INSERT INTO usuarios_roles (usuario_id, role_id) VALUES (3, 2);

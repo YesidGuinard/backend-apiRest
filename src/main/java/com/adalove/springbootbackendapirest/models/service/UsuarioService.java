@@ -1,6 +1,7 @@
 package com.adalove.springbootbackendapirest.models.service;
 
 import com.adalove.springbootbackendapirest.models.dao.IUsuarioDao;
+import com.adalove.springbootbackendapirest.models.entity.Role;
 import com.adalove.springbootbackendapirest.models.entity.Usuario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UsuarioService implements UserDetailsService {
+public class UsuarioService implements IUsuarioService, UserDetailsService {
 
     private final IUsuarioDao usuarioDao;
     private Logger logger = LoggerFactory.getLogger(UsuarioService.class);
@@ -48,5 +49,13 @@ public class UsuarioService implements UserDetailsService {
 
         return new User(usuario.getUserName(), usuario.getPassword(), usuario.getEnabled(), true, true, true, authorities);
 
+    }
+
+    @Override
+    public Usuario findByUserApellidoHabilitado(String userApellido,Boolean enabled) {
+        Role roleTest = new Role();
+        roleTest.setId(2L);
+        roleTest.setNombre("RoleTest");
+        return usuarioDao.findByApellidoAndEnabledAndRolesEquals(userApellido,enabled,roleTest);
     }
 }
