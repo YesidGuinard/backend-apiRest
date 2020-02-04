@@ -56,6 +56,7 @@ public class UsuarioService implements IUsuarioService, UserDetailsService {
         Role roleTest = new Role();
         roleTest.setId(2L);
         roleTest.setNombre("RoleTest");
-        return usuarioDao.findByApellidoAndEnabledAndRolesEquals(userApellido,enabled,roleTest);
+        //return usuarioDao.findByApellidoAndEnabledAndRolesEquals(userApellido,enabled,roleTest);
+        return usuarioDao.findByUserName(userApellido);
     }
 }
