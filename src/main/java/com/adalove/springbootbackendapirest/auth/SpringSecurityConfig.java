@@ -12,31 +12,30 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled=true)
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService usuarioService;
 
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     @Override
     @Autowired
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(usuarioService).passwordEncoder(PasswordEncoder());
+        auth.userDetailsService(this.usuarioService).passwordEncoder(passwordEncoder());
     }
 
-    @Bean
+    @Bean("authenticationManager")
     @Override
     protected AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManager();
     }
 
-    @Bean
-    public BCryptPasswordEncoder PasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    // por el lado de sprig, desactivar algunos permisos
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
@@ -45,4 +44,5 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
+
 }
