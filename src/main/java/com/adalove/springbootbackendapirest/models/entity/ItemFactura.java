@@ -1,7 +1,17 @@
 package com.adalove.springbootbackendapirest.models.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "facturas_items")
@@ -12,11 +22,11 @@ public class ItemFactura implements Serializable {
     private Long id;
 
     private Integer cantidad;
-    private static final long serialVersionUID = 1L;
 
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "producto_id")
     private Producto producto;
-
 
     public Long getId() {
         return id;
@@ -34,7 +44,7 @@ public class ItemFactura implements Serializable {
         this.cantidad = cantidad;
     }
 
-    public Double getImpote() {
+    public Double getImporte() {
         return cantidad.doubleValue() * producto.getPrecio();
     }
 
@@ -45,4 +55,6 @@ public class ItemFactura implements Serializable {
     public void setProducto(Producto producto) {
         this.producto = producto;
     }
+
+    private static final long serialVersionUID = 1L;
 }

@@ -49,5 +49,4 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         return bean;
     }
 
-
 }
