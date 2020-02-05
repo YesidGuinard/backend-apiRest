@@ -2,7 +2,9 @@ package com.adalove.springbootbackendapirest.models.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "facturas")
@@ -20,12 +22,19 @@ public class Factura implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     //@JoinColumn(name="cliente_id")
     private Cliente cliente;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "factura_id")
+    private List<ItemFactura> items;
+
 
     @PrePersist
-    public void Preguardar() {
+    public void preguardar() {
         this.createAt = new Date();
     }
 
+    public Factura() {
+       items= new ArrayList<>();
+    }
 
     public Long getId() {
         return id;
@@ -57,5 +66,21 @@ public class Factura implements Serializable {
 
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public List<ItemFactura> getItems() {
+        return items;
+    }
+
+    public void setItems(List<ItemFactura> items) {
+        this.items = items;
     }
 }
