@@ -28,12 +28,12 @@ public class Factura implements Serializable {
 
 
     @PrePersist
-    public void preguardar() {
+    public void preGuardar() {
         this.createAt = new Date();
     }
 
     public Factura() {
-       items= new ArrayList<>();
+        items = new ArrayList<>();
     }
 
     public Long getId() {
@@ -82,5 +82,13 @@ public class Factura implements Serializable {
 
     public void setItems(List<ItemFactura> items) {
         this.items = items;
+    }
+
+    public Double getTotal() {
+        Double total = 0.0;
+        for (ItemFactura itemFactura : items) {
+            total += itemFactura.getImpote();
+        }
+        return total;
     }
 }
