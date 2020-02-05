@@ -3,7 +3,9 @@ package com.adalove.springbootbackendapirest.models.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -46,6 +48,12 @@ public class Cliente implements Serializable {
     @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
     private Region region;
 
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "cliente", cascade = CascadeType.ALL)
+    private List<Factura> facturas;
+
+    public Cliente() {
+        this.facturas = new ArrayList<>();
+    }
 
 //    @PrePersist
 //    public void prePersist() {
